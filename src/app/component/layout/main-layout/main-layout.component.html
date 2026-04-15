@@ -1,0 +1,31 @@
+<div class="container-fluid mt-1">
+    <button class="btn btn-dark btn-sm px-1 mb-2" (click)="goBack()" *ngIf="isLoggedIn">
+        ⬅ رجوع
+    </button>
+
+    <!-- Top Bar -->
+    <div class="mx-2 my-1" *ngIf="isLoggedIn">
+
+        <div class="d-flex align-items-center justify-content-around gap-1 mb-3">
+
+            <button class="btn btn-sm btn-danger" (click)="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                تسجيل الخروج
+            </button>
+
+            <button class="btn btn-primary btn-sm fw-bold" (click)="goYearSum()" *ngIf="role === 'Employee'">
+                📊 ملخص السنة
+            </button>
+
+            <button class="btn btn-sm btn-secondary" (click)="goHome()" *ngIf="role === 'Employee'">
+                الرئيسيه
+            </button>
+            <button class="btn btn-sm btn-secondary" (click)="goEmpList()" *ngIf="role === 'Admin'">
+                القائمه
+            </button>
+        </div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

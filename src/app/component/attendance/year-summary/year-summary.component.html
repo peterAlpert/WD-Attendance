@@ -1,0 +1,114 @@
+<div class="container my-4" dir="rtl">
+    <h3 class="text-center mb-4">ملخص كل شهر</h3>
+
+    <div class="accordion" id="yearSummaryAccordion">
+        <div class="accordion-item" *ngFor="let m of yearSummary; let i = index">
+            <h2 class="accordion-header" id="heading{{i}}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i">
+                    {{ m.name }}
+                </button>
+            </h2>
+            <div [id]="'collapse' + i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading' + i"
+                data-bs-parent="#yearSummaryAccordion">
+                <div class="accordion-body d-flex flex-wrap justify-content-center gap-2">
+                    <span class="badge badge-item" *ngFor="let item of summaryItems(m.summary)"
+                        [ngClass]="item.bgClass">
+                        <strong>{{ item.value }}</strong>
+                        <small class="d-block">{{ item.label }}</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="text-center my-5">إجمالي السنة</h3>
+    <div class="card shadow-lg border-0 rounded-4 total-year-card mb-5">
+        <div class="card-header text-white fw-bold text-center fs-5 bg-success rounded-top">
+            إجمالي السنة
+        </div>
+        <div class="card-body d-flex flex-wrap justify-content-center gap-2 text-center">
+            <span class="badge badge-item" *ngFor="let item of summaryItems(yearTotal)" [ngClass]="item.bgClass">
+                <strong>{{ item.value }}</strong>
+                <small class="d-block">{{ item.label }}</small>
+            </span>
+        </div>
+    </div>
+
+    <!-- <h3 class="text-center my-5">المتبقي من الإجازات</h3>
+    <div class="row justify-content-center mb-5">
+
+        <div class="col-6 col-md-3">
+            <div class="card text-center bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h6>المتبقي من السنوي</h6>
+                    <h3>{{ annualRemaining }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card text-center bg-secondary text-white shadow">
+                <div class="card-body">
+                    <h6>المتبقي من العارضة</h6>
+                    <h3>{{ casualRemaining }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div> -->
+</div>
+
+<div class="container-fluid mt-4" dir="rtl">
+    <h5 class="mb-3 text-center">📊 البدلات</h5>
+
+    <div class="table-responsive w-100">
+
+        <table class="table table-bordered table-hover text-center align-middle w-100 mb-0">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>العيد</th>
+                    <th>التاريخ</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let c of compensations let i = index">
+
+                    <td>{{ i + 1 }}</td>
+
+                    <!-- اسم العيد -->
+                    <td>{{ c.name }}</td>
+
+                    <!-- تاريخ العيد -->
+                    <td class="rtl-date">{{ c.date | date:'dd/MM' }}</td>
+
+                    <!-- الحالة -->
+                    <td>
+
+                        <span *ngIf="c.isUsed" class="badge bg-secondary">
+                            ✔ مستخدم
+                        </span>
+
+                        <span *ngIf="!c.isUsed && !c.isExpired" class="badge bg-success">
+                            ⏳ متاح
+                        </span>
+
+                        <span *ngIf="c.isExpired && !c.isUsed" class="badge bg-danger">
+                            ❌ انتهى
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="login-container">
+    <div class="login-card">
+
+        <h2>تسجيل الدخول</h2>
+        <p class="subtitle">من فضلك أدخل بياناتك</p>
+
+        <div class="input-group">
+            <input type="text" placeholder="اسم المستخدم" [(ngModel)]="userName" required />
+        </div>
+
+        <div class="input-group">
+            <input type="password" placeholder="كلمة المرور" [(ngModel)]="password" maxlength="20" required />
+        </div>
+
+        <button class="login-btn" (click)="login()">
+            دخول
+        </button>
+
+        <p class="error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </p>
+
+    </div>
+</div>

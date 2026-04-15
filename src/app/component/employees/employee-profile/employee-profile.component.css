@@ -1,0 +1,21 @@
+.card {
+    border-radius: 0.75rem;
+}
+
+.card-body h3 {
+    font-size: 1.6rem;
+}
+
+.card-body h6 {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .card-body h3 {
+        font-size: 1.3rem;
+    }
+
+    .card-body h6 {
+        font-size: 0.85rem;
+    }
+}

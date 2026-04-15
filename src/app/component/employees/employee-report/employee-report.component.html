@@ -1,0 +1,244 @@
+<div class="card shadow-lg py-2 mb-3">
+    <div class="card-body d-flex align-items-center">
+
+        <span class="flex-grow-1 text-start fw-semibold fs-5">
+            {{ employee.name }}
+        </span>
+
+        <span class="flex-grow-1 text-center">
+            {{ employee.sap }}
+        </span>
+
+        <span class="flex-grow-1 text-end">
+            <span class="badge bg-secondary">{{ employee.job }}</span>
+        </span>
+
+    </div>
+</div>
+
+<div class=" mb-3" dir="rtl">
+    <div class="fw-semibold fs-5 mb-3">عدد ايام السنوي <span class="badge bg-primary">{{ annualLeave }}</span> يوم
+    </div>
+    <div class="my-3 d-inline" *ngIf="annualLeave === 15">
+        لترقية الرصيد السنوي الى 24 يوم
+        <button class="btn btn-sm btn-success d-inline" (click)="editAnnualLeave()">
+            اضغط هنا
+        </button>
+    </div>
+
+</div>
+
+<h5 class="mb-3 text-center">ملخص السنة</h5>
+<div class="row g-2" dir="rtl">
+    <div class="col-md-3 col-6">
+        <div class="card bg-success text-white text-center">
+            <div class="card-body">
+                شغل
+                <h3>{{yearSummary.work}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-6">
+        <div class="card bg-primary text-white text-center">
+            <div class="card-body">
+                راحة
+                <h3>{{yearSummary.rest}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card bg-warning text-dark text-center">
+            <div class="card-body">
+                سنوي
+                <h3>{{yearSummary.annual}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card bg-secondary text-white text-center">
+            <div class="card-body">
+                عارضة
+                <h3>{{yearSummary.casual}}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h5 class="mt-4 text-center">المتبقي من الإجازات</h5>
+
+<div class="row g-2 " dir="rtl">
+
+    <div class="col-md-4 col-6">
+        <div class="card text-center bg-warning">
+            <div class="card-body">
+                السنوي المتبقي
+                <h3>{{annualRemaining}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-6">
+        <div class="card text-center bg-secondary text-white">
+            <div class="card-body">
+                العارضة المتبقية
+                <h3>{{casualRemaining}}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h5 class="mt-4 text-center">ملخص أيام الأسبوع</h5>
+
+<div class="row g-3" dir="rtl">
+
+    <div class="col-md-6 col-12"
+        *ngFor="let day of ['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة']">
+
+        <div class="card shadow-lg border-0">
+
+            <!-- اسم اليوم -->
+            <div class="card-header text-center fw-bold fs-5 bg-dark text-white" style="cursor: pointer;"
+                (click)="toggleDay(day)">
+                {{ day }}
+                <span class="float-start">
+                    <i class="fa" [ngClass]="openedDay === day ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                </span>
+            </div>
+
+            <!-- المحتوى -->
+            <div class="card-body" *ngIf="openedDay === day">
+
+                <div class="row g-2 text-center">
+
+                    <!-- شغل -->
+                    <div class="col-6">
+                        <div class="card bg-success text-white">
+                            <div class="card-body py-2">
+                                <div>شغل</div>
+                                <h5 class="mb-0">{{ weekSummary[day]?.work || 0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- راحة -->
+                    <div class="col-6">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body py-2">
+                                <div>راحة</div>
+                                <h5 class="mb-0">{{ weekSummary[day]?.rest || 0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- سنوي -->
+                    <div class="col-6">
+                        <div class="card bg-warning text-dark">
+                            <div class="card-body py-2">
+                                <div>سنوي</div>
+                                <h5 class="mb-0">{{ weekSummary[day]?.annual || 0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- عارضة -->
+                    <div class="col-6">
+                        <div class="card bg-secondary text-white">
+                            <div class="card-body py-2">
+                                <div>عارضة</div>
+                                <h5 class="mb-0">{{ weekSummary[day]?.casual || 0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<h5 class="mt-5 text-center">📊 الإحصائيات</h5>
+
+<div class="row mt-3" dir="rtl">
+
+    <!-- Pie -->
+    <div class="col-md-6 col-12">
+        <div class="card shadow p-3">
+            <h6 class="text-center">ملخص السنة</h6>
+            <canvas id="yearChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Bar -->
+    <div class="col-md-6 col-12">
+        <div class="card shadow p-3">
+            <h6 class="text-center">أيام الأسبوع</h6>
+            <canvas id="weekChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<h5 class="mt-5 text-center">📋 تفاصيل الإجازات</h5>
+<div *ngIf="leaveDetails.length === 0" class="text-center text-muted">
+    لا توجد إجازات مسجلة
+</div>
+
+<div *ngIf="leaveDetails.length > 0" class="card shadow mt-3" dir="rtl">
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered text-center align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>اليوم</th>
+                        <th>التاريخ</th>
+                        <th>النوع</th>
+                        <th>التوقيت</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let item of leaveDetails">
+
+                        <td>{{ item.day }}</td>
+
+                        <td>{{ item.date }}</td>
+
+                        <td>
+                            <span class="badge" [ngClass]="{
+                  'bg-warning text-dark': item.type === 'سنوي' || item.type === 'نص سنوي',
+                  'bg-secondary': item.type === 'عارضة' || item.type === 'نص عارضة'
+                }">
+                                {{ item.type }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span *ngIf="item.timeSlot !== '-'" class="badge bg-info text-dark">
+                                {{ item.timeSlot }}
+                            </span>
+                            <span *ngIf="item.timeSlot === '-'">-</span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>

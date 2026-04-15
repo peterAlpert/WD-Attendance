@@ -1,0 +1,135 @@
+.month-card,
+.total-year-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.month-card:hover,
+.total-year-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.badge-item {
+    min-width: 60px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.badge-item:hover {
+    transform: scale(1.1);
+    cursor: default;
+}
+
+/* Optional: ألوان background لكل badge حسب نوع الحالة */
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.bg-dark {
+    background-color: #343a40 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge-item {
+    min-width: 60px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.badge-item:hover {
+    transform: scale(1.1);
+    cursor: default;
+}
+
+.month-card {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.month-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.month-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.month-details {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.badge-item {
+    min-width: 60px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.badge-item:hover {
+    transform: scale(1.1);
+    cursor: default;
+}
+
+.rtl-date {
+    direction: rtl;
+    unicode-bidi: plaintext;
+}
+
+.table-responsive {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+}

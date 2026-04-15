@@ -1,0 +1,77 @@
+<div class="container-fluid ">
+
+    <!-- Employee Info -->
+    <div class="row mb-1 ">
+        <div class="col-12 col-lg-4 mx-auto">
+            <div class="card shadow-lg py-2">
+                <div class="card-body d-flex align-items-center">
+
+                    <span class="flex-grow-1 text-start fw-semibold fs-5">
+                        {{ employee.name }}
+                    </span>
+
+                    <span class="flex-grow-1 text-center">
+                        {{ employee.sap }}
+                    </span>
+
+                    <span class="flex-grow-1 text-end">
+                        <span class="badge bg-secondary">{{ employee.job }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2" dir="ltr">
+            <span class="flex-grow-1 text-start">
+
+                <small class="ms-1">يوم سنوي</small>
+                <span class="badge bg-primary mx-1">
+                    {{ employee.annualLeave }}
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Year Calendar -->
+    <div class="row my-4" dir="rtl">
+        <div class="col-12">
+            <app-year-calendar *ngIf="employee.job !== 'Admin'" (calendarChanged)="onCalendarChanged($event)"
+                (monthChanged)="changeMonth($event)">
+            </app-year-calendar>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-1 mb-5 mb-lg-5 justify-content-around" dir="rtl">
+        <div class="col-4 h-auto col-md-1" *ngFor="let item of summaryItems">
+            <div class="card text-center text-white shadow-lg mb-1 mb-lg-5 " [ngClass]="item.bgClass">
+                <div class="card-body ">
+                    <h6 class="mb-1">{{ item.label }}</h6>
+                    <h3 class="mb-0">{{ item.value }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-5" dir="rtl">
+
+        <div class="col-6 col-md-3">
+            <div class="card text-center bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h6>المتبقي من السنوي</h6>
+                    <h3>{{ annualRemaining }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <div class="card text-center bg-secondary text-white shadow">
+                <div class="card-body">
+                    <h6>المتبقي من العارضة</h6>
+                    <h3>{{ casualRemaining }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

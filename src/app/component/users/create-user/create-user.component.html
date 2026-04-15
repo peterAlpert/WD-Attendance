@@ -1,0 +1,18 @@
+<div class="container mt-3">
+    <h3>إضافة مستخدم جديد</h3>
+
+    <div class="mb-2">
+        <input type="text" [(ngModel)]="user.userName" class="form-control" placeholder="اسم المستخدم">
+    </div>
+    <div class="mb-2">
+        <input type="password" [(ngModel)]="user.password" class="form-control" placeholder="كلمة المرور">
+    </div>
+    <div class="mb-2">
+        <input type="text" [(ngModel)]="user.role" class="form-control" placeholder="الدور">
+    </div>
+    <div class="mb-2">
+        <input type="number" [(ngModel)]="user.employeeId" class="form-control" placeholder="رقم الموظف">
+    </div>
+
+    <button class="btn btn-primary" (click)="saveUser()">إضافة مستخدم</button>
+</div>

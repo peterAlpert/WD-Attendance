@@ -1,1 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+.day {
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.work {
+    background: #198754;
+    color: white;
+}
+
+.rest {
+    background: #0d6efd;
+    color: white;
+}
+
+.annual {
+    background: #ffc107;
+}
+
+.casual {
+    background: #6c757d;
+    color: white;
+}
+
+.compensation {
+    background: #0dcaf0;
+}
+
+.absent-with-permission {
+    background: #dc3545;
+    color: white;
+}
+
+.absent-without-permission {
+    background: #212529;
+    color: white;
+}
+
+.day {
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.day:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+
+@media (max-width: 768px) {
+    .day {
+        font-size: 10px;
+        padding: 6px !important;
+    }
+}
+
+.fc .fc-daygrid-day-number {
+    padding: 1px;
+    position: relative;
+    z-index: 4;
+}
+
+a {
+    color: black !important;
+    text-decoration: none !important;
+}

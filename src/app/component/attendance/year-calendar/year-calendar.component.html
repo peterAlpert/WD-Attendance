@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between align-items-center mb-2">
+
+    <select class="form-select w-auto" (change)="goToMonth($any($event.target).value)">
+        <option *ngFor="let m of months" [value]="m.value">
+            {{ m.name }}
+        </option>
+    </select>
+
+</div>
+
+<full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+
+<!-- Modal لتغيير الحالة -->
+<div class="modal fade show d-block" *ngIf="selectedDate">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">{{ selectedDate | date:'EEEE d MMM yyyy' }}</h6>
+                <button class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body d-grid gap-2">
+                <button class="btn btn-success" (click)="setStatus(DayStatus.Work)">شغل</button>
+                <button class="btn btn-primary" (click)="setStatus(DayStatus.Rest)">راحة</button>
+                <button class="btn btn-warning text-dark" (click)="setStatus(DayStatus.Annual)">سنوي</button>
+                <button class="btn btn-warning opacity-75 text-dark" (click)="openHalfModal(DayStatus.HalfAnnual)">
+                    نص سنوي
+                </button>
+                <button class="btn btn-secondary" (click)="setStatus(DayStatus.Casual)">عارضة</button>
+                <button class="btn btn-secondary opacity-75 text-white" (click)="openHalfModal(DayStatus.HalfCasual)">
+                    نص عارضة
+                </button>
+                <button class="btn btn-info text-dark" (click)="setStatus(DayStatus.Compensation)">بدل</button>
+                <button class="btn btn-primary opacity-75 text-white" (click)="setStatus(DayStatus.TwoHours)">اذن
+                    ساعتين</button>
+                <button class="btn btn-danger" (click)="setStatus(DayStatus.AbsentWithPermission)">غياب بإذن</button>
+                <button class="btn btn-dark" (click)="setStatus(DayStatus.AbsentWithoutPermission)">غياب بدون
+                    إذن</button>
+                <button class="btn btn-danger opacity-75 text-white" (click)="setStatus(DayStatus.Sick)">مرضي</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal اختيار الميعاد -->
+<div class="modal fade show d-block" *ngIf="selectedStatus">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">اختار ميعاد النصف يوم</h6>
+                <button class="btn-close" (click)="closeHalfModal()"></button>
+            </div>
+
+            <div class="modal-body d-grid gap-2">
+                <button class="btn btn-outline-primary" *ngFor="let slot of halfTimeSlots"
+                    (click)="confirmHalfStatus(slot.value)">
+                    {{ slot.label }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade show d-block" *ngIf="selectedHoliday">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">الإجازات الرسمية</h6>
+                <button class="btn-close" (click)="closeHolidayModal()"></button>
+            </div>
+
+            <div class="modal-body d-grid gap-2">
+
+                <button class="btn" *ngFor="let h of holidays"
+                    [ngClass]="h.isUsed ? 'btn-secondary' : 'btn-outline-primary'" [disabled]="h.isUsed"
+                    (click)="useHoliday(h.id)">
+
+                    {{ h.name }} - {{ h.date | date:'dd/MM/yyyy' }}
+
+                    <span *ngIf="h.isUsed">✔ مستخدم</span>
+
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop fade show" *ngIf="selectedHoliday"></div>
+
+<div class="modal-backdrop fade show" *ngIf="selectedStatus" (click)="closeHalfModal()"></div>
+
+
+<div class="modal-backdrop fade show" *ngIf="selectedDate" (click)="close()"></div>
