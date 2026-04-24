@@ -187,7 +187,7 @@
 
 </div>
 
-<h5 class="mt-5 text-center">📋 تفاصيل الإجازات</h5>
+<h5 class="mt-5 text-center">📋 تفاصيل العوارض والسنوي</h5>
 <div *ngIf="leaveDetails.length === 0" class="text-center text-muted">
     لا توجد إجازات مسجلة
 </div>
@@ -239,6 +239,60 @@
             </table>
 
         </div>
+
+    </div>
+</div>
+
+<h5 class="mt-5 text-center">📋 تفاصيل البدلات</h5>
+<div class="container-fluid mt-4" dir="rtl">
+
+    <div class="table-responsive w-100">
+
+        <table class="table table-bordered table-hover text-center align-middle w-100 mb-0">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>العيد</th>
+                    <th>التاريخ</th>
+                    <th>الحالة</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let c of compensations let i = index">
+
+                    <td>{{ i + 1 }}</td>
+
+                    <!-- اسم العيد -->
+                    <td>{{ c.name }}</td>
+
+                    <!-- تاريخ العيد -->
+                    <td class="rtl-date">{{ c.date | date:'dd/MM' }}</td>
+
+                    <!-- الحالة -->
+                    <td>
+
+                        <span *ngIf="c.isUsed" class="badge bg-secondary">
+                            ✔ مستخدم
+                        </span>
+
+                        <span *ngIf="!c.isUsed && !c.isExpired" class="badge bg-success">
+                            ⏳ متاح
+                        </span>
+
+                        <span *ngIf="c.isExpired && !c.isUsed" class="badge bg-danger">
+                            ❌ انتهى
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
 
     </div>
 </div>

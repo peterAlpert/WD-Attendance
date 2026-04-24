@@ -6,6 +6,7 @@ import { EmpoleeService } from '../../../services/empolee.service';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
+import { UserService } from '../../../services/user.service';
 Chart.register(...registerables);
 
 @Component({
@@ -65,6 +66,8 @@ export class EmployeeReportComponent {
 
       this.renderYearChart();
       this.renderWeekChart();
+
+      this.loadCompensations();
 
     });
 
@@ -254,6 +257,17 @@ export class EmployeeReportComponent {
 
   toggleDay(day: string) {
     this.openedDay = this.openedDay === day ? '' : day;
+  }
+
+  compensations: any[] = [];
+
+  loadCompensations() {
+    this._calendarService.getHolidays(this.employeeId)
+      .subscribe(res => {
+        this.compensations = res;
+        console.log(res);
+
+      });
   }
 
 }

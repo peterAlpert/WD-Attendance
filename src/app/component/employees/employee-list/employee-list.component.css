@@ -1,4 +1,90 @@
-card-body:hover {
-    scale: 1.2;
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-body:hover {
+    transform: scale(1.05);
     transition: all 0.3s ease-in-out;
+}
+
+.visit-card {
+    background: linear-gradient(135deg, #0d6efd, #4dabf7);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 50px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    min-width: 120px;
+    font-size: 12px;
+    display: inline-block;
+
+}
+
+
+.visit-card:hover {
+    transform: translateY(-5px);
+}
+
+.visit-card .icon {
+    font-size: 18px;
+}
+
+.visit-card .title {
+    font-size: 11px;
+}
+
+.visit-card .count {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.count {
+    animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+input {
+    border: none;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+
+    .visit-card {
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .visit-card {
+        margin: auto;
+    }
 }

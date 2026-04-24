@@ -1,3 +1,4 @@
+import { UserService } from './../../../services/user.service';
 import { EmpoleeService } from './../../../services/empolee.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -32,7 +33,7 @@ export class EmployeeProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private _EmpoleeService: EmpoleeService,
     private _AuthService: AuthService,
-    private _calendarService: CalendarService
+    private _user: UserService,
   ) {
 
 
@@ -55,6 +56,10 @@ export class EmployeeProfileComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching employee', err);
       }
+    });
+
+    this._user.addVisit().subscribe(res => {
+      console.log("عدد الزيارات:", res);
     });
 
 

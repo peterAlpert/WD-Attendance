@@ -8,6 +8,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { DayStatus } from '../../../models/day-status';
 import { ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
 
 registerLocaleData(localeAr);
 
@@ -45,6 +46,7 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
   calendarOptions: any;
   employeeId: string | null = '';
   isAdmin = false;
+  lastClick = 0;
 
   currentMonth = new Date().getMonth();
 
@@ -188,12 +190,14 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
         const clickedMonth = info.date.getMonth();
         const currentMonth = info.view.currentStart.getMonth();
 
-        // لو اليوم مش من نفس الشهر امنع الضغط
-        if (clickedMonth !== currentMonth) {
-          return;
-        }
+        if (clickedMonth !== currentMonth) return;
 
-        this.selectedDate = info.dateStr;
+        const date = info.dateStr;
+
+        // 👇 لو اليوم عليه حالة متفتحش مودال
+        if (this.dayStatusMap[date]) return;
+
+        this.selectedDate = date;
       },
       events: [],
 
@@ -205,6 +209,8 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
 
         const time = arg.event.extendedProps.timeSlot;
         const holidayDate = arg.event.extendedProps.holidayDate;
+
+
 
         // عنصر يحتوي الاسم العربي
         const wrapper = document.createElement('div');
@@ -248,51 +254,27 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
         // console.log(arg.event.extendedProps);
 
         return { domNodes: [wrapper] };
+      },
+      eventClick: (info: any) => {
+
+        const date = info.event.startStr;
+
+        if (this.isAdmin) return;
+
+        // 👇 double click detection
+        if (this.lastClick && (new Date().getTime() - this.lastClick < 300)) {
+
+          this.lastClick = 0;
+
+          this.onDoubleClick(date); // delete
+
+          return;
+        }
+
+        this.lastClick = new Date().getTime();
+
+        // ❌ مهم: لا تفتح مودال هنا
       }
-
-      // eventContent: (arg: any) => {
-      //   const status: DayStatus = arg.event.extendedProps.status;
-      //   const label = this.statusLabels[status];
-      //   const time = arg.event.extendedProps.timeSlot;
-      //   const classes = this.statusClasses[status] || '';
-
-      //   const wrapper = document.createElement('div');
-      //   wrapper.style.width = '100%';
-      //   wrapper.style.height = '100%';
-      //   wrapper.style.display = 'flex';
-      //   wrapper.style.flexDirection = 'column';
-      //   wrapper.style.alignItems = 'center';
-      //   wrapper.style.justifyContent = 'center';
-      //   wrapper.style.fontWeight = '900';
-      //   wrapper.style.fontSize = '0.75rem';
-      //   wrapper.style.position = 'relative';
-      //   wrapper.style.borderRadius = '2px';
-      //   wrapper.style.color = 'white'; // نص واضح على الخلفية
-
-      //   // نص يوم
-      //   if (status === 'half-annual' || status === 'half-casual') {
-      //     // لون الخلفية نصف/نصف باستخدام gradient
-      //     wrapper.style.background = `${classes.includes('bg-warning') ? '#ffc107' : classes.includes('bg-secondary') ? '#6c757d' : '#17a2b8'} linear-gradient(to right, ${classes.includes('bg-warning') ? '#ffc107' : classes.includes('bg-secondary') ? '#6c757d' : '#17a2b8'} 50%, transparent 50%)`;
-      //     wrapper.textContent = label;
-
-      //     // الوقت لو موجود
-      //     if (time) {
-      //       const small = document.createElement('small');
-      //       small.textContent = time;
-      //       small.style.position = 'absolute';
-      //       small.style.bottom = '2px';
-      //       small.style.fontSize = '0.5rem';
-      //       wrapper.appendChild(small);
-      //     }
-      //   }
-      //   // يوم كامل
-      //   else {
-      //     wrapper.className = `d-flex align-items-center justify-content-center ${classes}`;
-      //     wrapper.textContent = label;
-      //   }
-
-      //   return { domNodes: [wrapper] };
-      // }
     };
   }
 
@@ -304,13 +286,14 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
 
       days.forEach(d => {
         this.dayStatusMap[d.date] = d.status;
+        // console.log(d);
         events.push({
           title: '',
           start: d.date,
           allDay: true,
           extendedProps: {
             status: d.status,
-            timeSlot: d.timeSlot, // 👈 جديد
+            timeSlot: d.timeSlot,
             holidayDate: d.holidayDate
           }
         });
@@ -322,6 +305,7 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
         this.calendarComponent.getApi().addEventSource(events);
       }
 
+      // console.log(days);
       this.calendarChanged.emit(days);
     });
   }
@@ -377,23 +361,96 @@ export class YearCalendarComponent implements OnInit, AfterViewInit {
     this.selectedHoliday = null;
   }
 
-  useHoliday(holidayId: number) {
+  useHoliday(holiday: any) {
 
-    this._calendarService.useHoliday(this.employeeId, holidayId)
-      .subscribe(() => {
+    Swal.fire({
+      title: 'تأكيد اختيار البدل',
+      text: `هل تريد استخدام بدل يوم: ${holiday.name} ؟`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم استخدمه',
+      cancelButtonText: 'إلغاء',
+      confirmButtonColor: '#0d6efd',
+      cancelButtonColor: '#6c757d'
+    }).then((result) => {
 
-        this.loadDays(); // refresh calendar
+      if (!result.isConfirmed) return;
 
-        this._calendarService.getHolidays(this.employeeId)
-          .subscribe(res => this.holidays = res);
-
-        // 👇 اقفل المودال
-        this.closeHolidayModal();
-
-        // 👇 reset
-        this.selectedDate = null;
-
+      Swal.fire({
+        title: 'جاري الحفظ...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
       });
+
+      // console.log("selectedDate:", this.selectedDate);
+      // console.log("holiday:", holiday);
+
+      // 1️⃣ استخدم العيد
+      this._calendarService.useHoliday(this.employeeId, holiday.id)
+        .subscribe(() => {
+
+          // 2️⃣ سجل اليوم كـ بدل في الكاليندر
+          this._calendarService.upsertDay(
+            this.employeeId,
+            this.selectedDate!,
+            DayStatus.Compensation,
+            null,
+            holiday.date
+          ).subscribe(() => {
+
+            this.loadDays();
+
+            Swal.fire({
+              icon: 'success',
+              title: 'تم بنجاح',
+              text: 'تم تسجيل البدل بنجاح',
+              timer: 1500,
+              showConfirmButton: false
+            });
+
+            this.closeHolidayModal();
+            this.selectedDate = null;
+
+          });
+
+        });
+
+    });
+
   }
+
+  onDoubleClick(date: string) {
+
+    if (this.isAdmin) return;
+
+    Swal.fire({
+      title: 'حذف اليوم',
+      text: 'هل تريد حذف حالة هذا اليوم؟',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم احذف',
+      cancelButtonText: 'إلغاء'
+    }).then((result) => {
+
+      if (!result.isConfirmed) return;
+
+      this._calendarService.deleteDay(this.employeeId, date)
+        .subscribe(() => {
+
+          this.loadDays();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'تم الحذف',
+            timer: 1200,
+            showConfirmButton: false
+          });
+
+        });
+
+    });
+
+  }
+
 
 }

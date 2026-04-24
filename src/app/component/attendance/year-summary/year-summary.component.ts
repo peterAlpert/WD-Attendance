@@ -3,6 +3,7 @@ import { CalendarService, DayData } from '../../../services/calendar.service';
 import { AuthService } from '../../../services/auth.service';
 import { DayStatus } from '../../../models/day-status';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-year-summary',
@@ -40,7 +41,7 @@ export class YearSummaryComponent {
         this.buildYearSummary();
         console.log('ملخص السنة:', this.yearSummary);
         console.log('إجمالي السنة:', this.yearTotal);
-        console.log('All days of employee:', this.allDays);
+        // console.log('All days of employee:', this.allDays);
       });
     }
 
@@ -175,12 +176,43 @@ export class YearSummaryComponent {
   compensations: any[] = [];
 
   loadCompensations() {
-    this._calendarService.getHolidays(this.employeeId)
+    this._calendarService.getCompensationStatus(this.employeeId)
       .subscribe(res => {
-        this.compensations = res;
-        console.log(res);
-
+        this.compensations = [...res];
       });
+  }
+
+
+
+  unuse(holidayId: number) {
+
+    Swal.fire({
+      title: 'تأكيد الإجراء',
+      text: 'هل أنت متأكد؟',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'نعم',
+      cancelButtonText: 'إلغاء'
+    }).then((result) => {
+
+      if (!result.isConfirmed) return;
+
+      this._calendarService.unuseHoliday(Number(this.employeeId), holidayId)
+        .subscribe(() => {
+
+          this.loadCompensations();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'تم',
+            timer: 1200,
+            showConfirmButton: false
+          });
+
+        });
+
+    });
+
   }
 
 }

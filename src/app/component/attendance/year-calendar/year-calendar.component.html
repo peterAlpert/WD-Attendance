@@ -74,7 +74,7 @@
 
                 <button class="btn" *ngFor="let h of holidays"
                     [ngClass]="h.isUsed ? 'btn-secondary' : 'btn-outline-primary'" [disabled]="h.isUsed"
-                    (click)="useHoliday(h.id)">
+                    (click)="useHoliday(h)">
 
                     {{ h.name }} - {{ h.date | date:'dd/MM/yyyy' }}
 

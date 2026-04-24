@@ -32,14 +32,15 @@ export class CalendarService {
     employeeId: string | null,
     date: string,
     status: DayStatus,
-    timeSlot?: string | null
-  ): Observable<any> {
-
+    timeSlot?: string | null,
+    holidayDate?: string | null
+  ) {
     return this.http.post(`${this.baseUrl}`, {
       employeeId,
       date,
       status,
-      timeSlot // 👈 لو مش موجود مش هيتبعت
+      timeSlot,
+      holidayDate // 👈 جديد
     });
   }
 
@@ -66,6 +67,18 @@ export class CalendarService {
   getCompensationStatus(employeeId: string | null) {
     return this.http.get<any[]>(
       `${this.baseUrlHolidays}/compensation-status/${employeeId}`
+    );
+  }
+
+  unuseHoliday(employeeId: number, holidayId: number) {
+    return this.http.delete(
+      `${this.baseUrlHolidays}/unuse?employeeId=${employeeId}&holidayId=${holidayId}`
+    );
+  }
+
+  deleteDay(employeeId: string | null, date: string) {
+    return this.http.delete(
+      `${this.baseUrl}?employeeId=${employeeId}&date=${date}`
     );
   }
 

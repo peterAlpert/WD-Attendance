@@ -72,6 +72,7 @@
                     <th>العيد</th>
                     <th>التاريخ</th>
                     <th>الحالة</th>
+                    <th>الإجراء</th>
                 </tr>
             </thead>
 
@@ -101,6 +102,16 @@
                         <span *ngIf="c.isExpired && !c.isUsed" class="badge bg-danger">
                             ❌ انتهى
                         </span>
+
+                    </td>
+
+                    <td (click)="$event.stopPropagation()">
+
+                        <button *ngIf="c.isUsed" class="btn btn-sm btn-outline-danger"
+                            (click)="unuse(c.id); $event.stopPropagation(); $event.preventDefault()">
+
+                            إلغاء
+                        </button>
 
                     </td>
 
