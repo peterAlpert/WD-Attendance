@@ -7,6 +7,5 @@
 
 export const environment = {
     production: false,
-    // apiUrl: 'https://wdattendance.runasp.net/api'
-    apiUrl: 'https://wd-attendance.pages.dev/api'
+    apiUrl: 'https://wdattendance.runasp.net/api'
 };
