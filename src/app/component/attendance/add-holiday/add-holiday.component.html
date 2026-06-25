@@ -1,0 +1,31 @@
+<div class="container mt-4" dir="rtl">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-warning fw-bold">
+            ➕ إضافة بدل جديد
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+                <label class="form-label">اسم المناسبة</label>
+
+                <input type="text" class="form-control" [(ngModel)]="name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">التاريخ</label>
+
+                <input type="date" class="form-control" [(ngModel)]="date">
+            </div>
+
+            <button class="btn btn-success" (click)="save()">
+                حفظ
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

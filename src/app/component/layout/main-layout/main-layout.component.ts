@@ -29,8 +29,11 @@ export class MainLayoutComponent {
       this.isLoggedIn = status;
     });
 
+    this.authService.role$.subscribe(role => {
+      this.role = role;
+    });
+
     this.empId = this.authService.getEmpId();
-    this.role = this.authService.getRole();
   }
 
 
@@ -74,6 +77,10 @@ export class MainLayoutComponent {
 
     });
 
+  }
+
+  goAddHoliday() {
+    this.router.navigate(['/add-holiday']);
   }
 
 }

@@ -15,6 +15,9 @@ export class AuthService {
   private loggedInSubject = new BehaviorSubject<boolean>(localStorage.getItem('isLoggedIn') === 'true');
   loggedIn$ = this.loggedInSubject.asObservable();
 
+  private roleSubject = new BehaviorSubject<string | null>(localStorage.getItem('role'));
+  role$ = this.roleSubject.asObservable();
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -35,6 +38,7 @@ export class AuthService {
 
   saveRole(role: string) {
     localStorage.setItem('role', role);
+    this.roleSubject.next(role); // 👈 دي المهمة
   }
 
   getRole(): string | null {
@@ -60,7 +64,9 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('empId');
     localStorage.removeItem('role');
-    this.loggedInSubject.next(false); // المستخدم سجل خروج
+
+    this.loggedInSubject.next(false);
+    this.roleSubject.next(null); // 👈 مهم
   }
 
   redirectUser() {

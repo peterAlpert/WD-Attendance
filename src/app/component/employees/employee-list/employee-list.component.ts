@@ -1,7 +1,7 @@
 import { EmpoleeData, EmpoleeService } from './../../../services/empolee.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { FilterByNamePipe } from '../../../filter-by-name.pipe';
@@ -19,7 +19,8 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private _EmpoleeService: EmpoleeService,
-    private _user: UserService
+    private _user: UserService,
+    private router: Router
   ) {
     this._EmpoleeService.getEmpolees().subscribe({
       next: (data) => {
@@ -69,6 +70,5 @@ export class EmployeeListComponent implements OnInit {
       }
     }, stepTime);
   }
-
 
 }

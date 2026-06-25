@@ -1,7 +1,12 @@
 <div class="container-fluid mt-1">
-    <button class="btn btn-dark btn-sm px-1 mb-2" (click)="goBack()" *ngIf="isLoggedIn">
-        ⬅ رجوع
-    </button>
+    <div class="d-flex align-items-center justify-content-between mb-2" *ngIf="isLoggedIn" dir="rtl">
+        <button class="btn btn-warning btn-sm px-1 mb-2 me-2" (click)="goAddHoliday()" *ngIf="role === 'Admin'">
+            ➕ إضافة بدل جديد
+        </button>
+        <button class="btn btn-dark btn-sm px-1 mb-2 ms-2" (click)="goBack()">
+            ⬅ رجوع
+        </button>
+    </div>
 
     <!-- Top Bar -->
     <div class="mx-2 my-1" *ngIf="isLoggedIn">

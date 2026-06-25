@@ -41,6 +41,13 @@ export const routes: Routes = [
                 .then(m => m.EmployeeReportComponent),
         canActivate: [AuthGuard, EmployeeGuard],
     },
+    {
+        path: 'add-holiday',
+        loadComponent: () =>
+            import('./component/attendance/add-holiday/add-holiday.component')
+                .then(m => m.AddHolidayComponent),
+        canActivate: [AuthGuard, AdminGuard]
+    },
     { path: 'login', component: LoginComponent },
     { path: 'addUser', component: CreateUserComponent, canActivate: [AuthGuard] },
     { path: 'yearSummary', component: YearSummaryComponent, canActivate: [AuthGuard] },
